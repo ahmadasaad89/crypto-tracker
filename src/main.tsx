@@ -1,16 +1,16 @@
-import './reset.css';
+import './reset.css'
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import App from './App';
-import CryptoDetails from './CryptoDetails';
+import App from './App'
+import CryptoDetails from './CryptoDetails'
 
-const container = document.getElementById('root');
+const container = document.getElementById('root')
 
 if (container) {
-  const root = createRoot(container);
+  const root = createRoot(container)
   root.render(
     <React.StrictMode>
       <BrowserRouter>
@@ -20,7 +20,7 @@ if (container) {
         </Routes>
       </BrowserRouter>
     </React.StrictMode>,
-  );
+  )
 } else {
-  console.error('Failed to find the app container element');
+  console.error('Failed to find the app container element')
 }

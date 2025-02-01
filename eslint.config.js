@@ -1,12 +1,12 @@
 // eslint.config.js
-import js from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import prettierPlugin from 'eslint-plugin-prettier';
-import reactPlugin from 'eslint-plugin-react';
-import importSortPlugin from 'eslint-plugin-simple-import-sort';
-import globals from 'globals';
+import js from '@eslint/js'
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
+import prettierPlugin from 'eslint-plugin-prettier'
+import reactPlugin from 'eslint-plugin-react'
+import importSortPlugin from 'eslint-plugin-simple-import-sort'
+import globals from 'globals'
 
 export default [
   {
@@ -58,9 +58,10 @@ export default [
           aspects: ['invalidHref', 'preferButton'],
         },
       ],
+      semi: ['error', 'never'],
     },
   },
   {
     ignores: ['node_modules', 'build', 'dist', '.vscode'],
   },
-];
+]
