@@ -1,19 +1,19 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 interface ChartData {
-  time: string;
-  price: number;
+  time: string
+  price: number
 }
 
 interface ApiResponse {
-  prices: [number, number][];
+  prices: [number, number][]
 }
 
 function CryptoDetails() {
-  const { id } = useParams();
-  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const { id } = useParams()
+  const [chartData, setChartData] = useState<ChartData[]>([])
   useEffect(() => {
     const fetchChartData = async () => {
       try {
@@ -26,20 +26,20 @@ function CryptoDetails() {
               interval: 'daily',
             },
           },
-        );
+        )
 
         const formattedData: ChartData[] = response.data.prices.map((price) => ({
           time: new Date(price[0]).toLocaleDateString(),
           price: price[1],
-        }));
-        setChartData(formattedData);
+        }))
+        setChartData(formattedData)
       } catch (error) {
-        console.error('Error fetching chart data:', error);
+        console.error('Error fetching chart data:', error)
       }
-    };
+    }
 
-    fetchChartData();
-  }, [id]);
+    fetchChartData()
+  }, [id])
   return (
     <>
       <LineChart width={600} height={300} data={chartData}>
@@ -51,7 +51,7 @@ function CryptoDetails() {
         <Line type="monotone" dataKey="price" stroke="#8884d8" />
       </LineChart>
     </>
-  );
+  )
 }
 
-export default CryptoDetails;
+export default CryptoDetails
