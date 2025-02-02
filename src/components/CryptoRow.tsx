@@ -16,6 +16,12 @@ interface Props {
   onToggleFavorite: () => void
 }
 
+const StyledTableRow = styled(TableRow)({
+  cursor: 'pointer',
+  '&:hover': { backgroundColor: '#f5f5f5' },
+  height: '48px',
+})
+
 const NavigationLink = styled(NavLink)({
   textDecoration: 'none',
   color: 'inherit',
@@ -77,13 +83,7 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
   )
 
   return (
-    <TableRow
-      sx={{
-        cursor: 'pointer',
-        '&:hover': { backgroundColor: '#f5f5f5' },
-        height: '48px',
-      }}
-    >
+    <StyledTableRow>
       <StarCell>
         <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
       </StarCell>
@@ -148,7 +148,7 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
           />
         </NavigationLink>
       </GraphCell>
-    </TableRow>
+    </StyledTableRow>
   )
 }
 
