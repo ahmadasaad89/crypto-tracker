@@ -1,5 +1,6 @@
 import {
   Paper,
+  styled,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +16,46 @@ import CryptoRow from './CryptoRow'
 interface Props {
   coins: Coin[]
 }
+
+const StyledTable = styled(Table)({
+  borderCollapse: 'separate',
+  borderSpacing: '0 8px',
+  borderBottom: 'none',
+})
+
+const HeaderCell = styled(TableCell)({
+  borderBottom: 'none',
+  fontWeight: 'bold',
+  color: '#000',
+})
+
+const StarCell = styled(HeaderCell)({
+  width: '40px',
+})
+
+const NumberCell = styled(HeaderCell)({
+  width: '40px',
+  textAlign: 'center',
+})
+
+const NameCell = styled(HeaderCell)({
+  width: 'auto',
+})
+
+const PriceCell = styled(HeaderCell)({
+  width: '15%',
+  textAlign: 'right',
+})
+
+const ChangeCell = styled(HeaderCell)({
+  width: '15%',
+  textAlign: 'center',
+})
+
+const GraphCell = styled(HeaderCell)({
+  width: '15%',
+  textAlign: 'center',
+})
 
 const CryptoTable: React.FC<Props> = ({ coins }) => {
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
@@ -36,68 +77,15 @@ const CryptoTable: React.FC<Props> = ({ coins }) => {
       component={Paper}
       sx={{ backgroundColor: '#fff', borderRadius: 3, boxShadow: 3 }}
     >
-      <Table
-        sx={{ borderCollapse: 'separate', borderSpacing: '0 8px', borderBottom: 'none' }}
-      >
+      <StyledTable>
         <TableHead>
           <TableRow>
-            <TableCell
-              sx={{ width: '40px', textAlign: 'center', borderBottom: 'none' }}
-            ></TableCell>
-            <TableCell
-              sx={{
-                width: '40px',
-                textAlign: 'center',
-                fontWeight: 'bold',
-                color: '#000',
-                borderBottom: 'none',
-              }}
-            >
-              #
-            </TableCell>
-            <TableCell
-              sx={{
-                width: 'auto',
-                fontWeight: 'bold',
-                color: '#000',
-                borderBottom: 'none',
-              }}
-            >
-              Name
-            </TableCell>
-            <TableCell
-              sx={{
-                width: '15%',
-                fontWeight: 'bold',
-                color: '#000',
-                textAlign: 'right',
-                borderBottom: 'none',
-              }}
-            >
-              Price
-            </TableCell>
-            <TableCell
-              sx={{
-                width: '15%',
-                fontWeight: 'bold',
-                color: '#000',
-                textAlign: 'center',
-                borderBottom: 'none',
-              }}
-            >
-              24h Change
-            </TableCell>
-            <TableCell
-              sx={{
-                width: '15%',
-                fontWeight: 'bold',
-                color: '#000',
-                textAlign: 'center',
-                borderBottom: 'none',
-              }}
-            >
-              Price Graph (7D)
-            </TableCell>
+            <StarCell />
+            <NumberCell>#</NumberCell>
+            <NameCell>Name</NameCell>
+            <PriceCell>Price</PriceCell>
+            <ChangeCell>24h Change</ChangeCell>
+            <GraphCell>Price Graph (7D)</GraphCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -111,7 +99,7 @@ const CryptoTable: React.FC<Props> = ({ coins }) => {
             />
           ))}
         </TableBody>
-      </Table>
+      </StyledTable>
     </TableContainer>
   )
 }

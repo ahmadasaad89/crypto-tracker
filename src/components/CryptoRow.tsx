@@ -1,6 +1,6 @@
 import TrendingDownIcon from '@mui/icons-material/TrendingDown'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import { Avatar, Box, TableCell, TableRow, Typography } from '@mui/material'
+import { Avatar, Box, styled, TableCell, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
 import { NavLink } from 'react-router'
@@ -16,7 +16,66 @@ interface Props {
   onToggleFavorite: () => void
 }
 
+const NavigationLink = styled(NavLink)({
+  textDecoration: 'none',
+  color: 'inherit',
+})
+
+const BaseCell = styled(TableCell)({
+  borderBottom: 'none',
+  fontWeight: 'bold',
+})
+
+const StarCell = styled(BaseCell)({
+  width: '40px',
+  textAlign: 'center',
+})
+
+const NumberCell = styled(BaseCell)({
+  width: '40px',
+  textAlign: 'center',
+  color: '#666',
+})
+
+const NameCell = styled(BaseCell)({})
+
+const PriceCell = styled(BaseCell)({ color: '#000', textAlign: 'right' })
+
+const ChangeCell = styled(BaseCell)({
+  textAlign: 'center',
+  padding: 1,
+})
+
+const GraphCell = styled(BaseCell)({
+  width: '100px',
+  textAlign: 'center',
+})
+
+const ChangeBox = styled(Box)<{ positive: boolean }>(({ positive }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 1,
+  backgroundColor: positive ? '#eaf6ea' : '#fde8e8',
+  padding: '4px 8px',
+  borderRadius: '5px',
+}))
+
 const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite }) => {
+  const graphData = React.useMemo(
+    () => ({
+      labels: coin.sparkline_in_7d.price.map((_, i) => i),
+      datasets: [
+        {
+          data: coin.sparkline_in_7d.price,
+          borderColor: coin.price_change_percentage_24h > 0 ? '#77d368' : '#f45e5e',
+          borderWidth: 1.8,
+          pointRadius: 0,
+        },
+      ],
+    }),
+    [coin.sparkline_in_7d.price, coin.price_change_percentage_24h],
+  )
+
   return (
     <TableRow
       sx={{
@@ -25,32 +84,16 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
         height: '48px',
       }}
     >
-      <TableCell sx={{ width: '40px', textAlign: 'center', borderBottom: 'none' }}>
+      <StarCell>
         <FavoriteButton isFavorite={isFavorite} onToggle={onToggleFavorite} />
-      </TableCell>
+      </StarCell>
 
-      <TableCell
-        sx={{
-          width: '40px',
-          textAlign: 'center',
-          fontWeight: 'bold',
-          color: '#666',
-          borderBottom: 'none',
-        }}
-      >
-        <NavLink
-          to={`/coin/${coin.id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
-          {index + 1}
-        </NavLink>
-      </TableCell>
+      <NumberCell>
+        <NavigationLink to={`/coin/${coin.id}`}>{index + 1}</NavigationLink>
+      </NumberCell>
 
-      <TableCell sx={{ borderBottom: 'none' }}>
-        <NavLink
-          to={`/coin/${coin.id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
+      <NameCell>
+        <NavigationLink to={`/coin/${coin.id}`}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Avatar src={coin.image} sx={{ width: 28, height: 28 }} />
             <Typography sx={{ fontWeight: 'bold', color: '#000', fontSize: '14px' }}>
@@ -60,43 +103,18 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
               • {coin.symbol.toUpperCase()}
             </Typography>
           </Box>
-        </NavLink>
-      </TableCell>
+        </NavigationLink>
+      </NameCell>
 
-      <TableCell
-        sx={{
-          fontWeight: 'bold',
-          color: '#000',
-          textAlign: 'right',
-          borderBottom: 'none',
-        }}
-      >
-        <NavLink
-          to={`/coin/${coin.id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
+      <PriceCell>
+        <NavigationLink to={`/coin/${coin.id}`}>
           ${coin.current_price.toLocaleString()}
-        </NavLink>
-      </TableCell>
+        </NavigationLink>
+      </PriceCell>
 
-      <TableCell
-        sx={{ textAlign: 'center', padding: 1, fontWeight: 'bold', borderBottom: 'none' }}
-      >
-        <NavLink
-          to={`/coin/${coin.id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 1,
-              backgroundColor:
-                coin.price_change_percentage_24h > 0 ? '#eaf6ea' : '#fde8e8',
-              padding: '4px 8px',
-              borderRadius: '5px',
-            }}
-          >
+      <ChangeCell>
+        <NavigationLink to={`/coin/${coin.id}`}>
+          <ChangeBox positive={coin.price_change_percentage_24h > 0}>
             {coin.price_change_percentage_24h > 0 ? (
               <TrendingUpIcon sx={{ fontSize: 16, color: '#008000' }} />
             ) : (
@@ -111,28 +129,14 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
             >
               {formatPriceChange(coin.price_change_percentage_24h)}
             </Typography>
-          </Box>
-        </NavLink>
-      </TableCell>
+          </ChangeBox>
+        </NavigationLink>
+      </ChangeCell>
 
-      <TableCell sx={{ width: '100px', textAlign: 'center', borderBottom: 'none' }}>
-        <NavLink
-          to={`/coin/${coin.id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
+      <GraphCell>
+        <NavigationLink to={`/coin/${coin.id}`}>
           <Line
-            data={{
-              labels: coin.sparkline_in_7d.price.map((_, i) => i),
-              datasets: [
-                {
-                  data: coin.sparkline_in_7d.price,
-                  borderColor:
-                    coin.price_change_percentage_24h > 0 ? '#77d368' : '#f45e5e',
-                  borderWidth: 1.8,
-                  pointRadius: 0,
-                },
-              ],
-            }}
+            data={graphData}
             options={{
               responsive: true,
               maintainAspectRatio: false,
@@ -142,8 +146,8 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
             height={30}
             width={100}
           />
-        </NavLink>
-      </TableCell>
+        </NavigationLink>
+      </GraphCell>
     </TableRow>
   )
 }
