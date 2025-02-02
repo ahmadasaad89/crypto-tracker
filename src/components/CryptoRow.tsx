@@ -25,16 +25,22 @@ const StyledTableRow = styled(TableRow)({
 const NavigationLink = styled(NavLink)({
   textDecoration: 'none',
   color: 'inherit',
+  display: 'block',
+  width: '100%',
+  height: '100%',
+  padding: '16px',
 })
 
 const BaseCell = styled(TableCell)({
   borderBottom: 'none',
   fontWeight: 'bold',
+  padding: 0,
 })
 
 const StarCell = styled(BaseCell)({
   width: '40px',
   textAlign: 'center',
+  padding: '16px',
 })
 
 const NumberCell = styled(BaseCell)({
@@ -49,7 +55,6 @@ const PriceCell = styled(BaseCell)({ color: '#000', textAlign: 'right' })
 
 const ChangeCell = styled(BaseCell)({
   textAlign: 'center',
-  padding: 1,
 })
 
 const GraphCell = styled(BaseCell)({
