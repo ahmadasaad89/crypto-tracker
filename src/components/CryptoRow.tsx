@@ -62,7 +62,9 @@ const GraphCell = styled(BaseCell)({
   textAlign: 'center',
 })
 
-const ChangeBox = styled(Box)<{ positive: boolean }>(({ positive }) => ({
+const ChangeBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'positive',
+})<{ positive: boolean }>(({ positive }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   gap: 1,
@@ -119,7 +121,7 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
 
       <ChangeCell>
         <NavigationLink to={`/coin/${coin.id}`}>
-          <ChangeBox positive={coin.price_change_percentage_24h > 0}>
+          <ChangeBox positive={coin?.price_change_percentage_24h > 0}>
             {coin.price_change_percentage_24h > 0 ? (
               <TrendingUpIcon sx={{ fontSize: 16, color: '#008000' }} />
             ) : (

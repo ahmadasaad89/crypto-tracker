@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 import CryptoTable from './components/CryptoTable'
+import Header from './components/Header'
 
 const lightTheme = createTheme({
   palette: {
@@ -57,6 +58,7 @@ function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
+      <Header />
       <Container sx={{ padding: '24px', maxWidth: '90vw !important' }}>
         <CryptoTable coins={coins} />
       </Container>
