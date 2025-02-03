@@ -1,10 +1,11 @@
 import './utils/chartSetup'
 
 import { Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import CryptoTable from './components/CryptoTable'
+import ErrorModal from './components/ErrorModal'
 import Header from './components/Header'
 import { fetchCoins } from './features/cryptoSlice'
 import { AppDispatch, RootState } from './store/store'
@@ -34,10 +35,17 @@ export interface Coin {
 function App() {
   const dispatch = useDispatch<AppDispatch>()
   const { loading, error } = useSelector((state: RootState) => state.crypto)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     dispatch(fetchCoins())
   }, [dispatch])
+
+  useEffect(() => {
+    if (error) {
+      setIsModalOpen(true)
+    }
+  }, [error])
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -45,9 +53,14 @@ function App() {
       <Header />
       <Container sx={{ padding: '24px', maxWidth: '90vw !important' }}>
         {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
         <CryptoTable />
       </Container>
+
+      <ErrorModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        errorMessage={error || 'An unknown error occurred.'}
+      />
     </ThemeProvider>
   )
 }
