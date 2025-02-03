@@ -8,14 +8,12 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Coin } from '../App'
+import { toggleFavorite } from '../features/cryptoSlice'
+import { RootState } from '../store/store'
 import CryptoRow from './CryptoRow'
-
-interface Props {
-  coins: Coin[]
-}
 
 const StyledTable = styled(Table)({
   borderCollapse: 'separate',
@@ -57,20 +55,18 @@ const GraphCell = styled(HeaderCell)({
   textAlign: 'center',
 })
 
-const CryptoTable: React.FC<Props> = ({ coins }) => {
-  const [favorites, setFavorites] = useState<Set<string>>(new Set())
+const CryptoTable = () => {
+  const dispatch = useDispatch()
 
-  const handleToggleFavorite = (coinId: string) => {
-    setFavorites((prevFavorites) => {
-      const newFavorites = new Set(prevFavorites)
-      if (newFavorites.has(coinId)) {
-        newFavorites.delete(coinId)
-      } else {
-        newFavorites.add(coinId)
-      }
-      return newFavorites
-    })
-  }
+  const { coins, searchQuery, favorites } = useSelector(
+    (state: RootState) => state.crypto,
+  )
+
+  const filteredCoins: Coin[] = coins.filter(
+    (coin: Coin) =>
+      coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      coin.symbol.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
 
   return (
     <TableContainer
@@ -89,13 +85,13 @@ const CryptoTable: React.FC<Props> = ({ coins }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {coins.map((coin, index) => (
+          {filteredCoins.map((coin, index) => (
             <CryptoRow
               key={coin.id}
               coin={coin}
               index={index}
-              isFavorite={favorites.has(coin.id)}
-              onToggleFavorite={() => handleToggleFavorite(coin.id)}
+              isFavorite={favorites.includes(coin.id)}
+              onToggleFavorite={() => dispatch(toggleFavorite(coin.id))}
             />
           ))}
         </TableBody>

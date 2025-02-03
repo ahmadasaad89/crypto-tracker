@@ -1,11 +1,13 @@
 import './utils/chartSetup'
 
 import { Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import CryptoTable from './components/CryptoTable'
 import Header from './components/Header'
+import { fetchCoins } from './features/cryptoSlice'
+import { AppDispatch, RootState } from './store/store'
 
 const lightTheme = createTheme({
   palette: {
@@ -30,37 +32,21 @@ export interface Coin {
 }
 
 function App() {
-  const [coins, setCoins] = useState<Coin[]>([])
+  const dispatch = useDispatch<AppDispatch>()
+  const { loading, error } = useSelector((state: RootState) => state.crypto)
 
   useEffect(() => {
-    const fetchCoins = async () => {
-      try {
-        const response = await axios.get(
-          'https://api.coingecko.com/api/v3/coins/markets',
-          {
-            params: {
-              vs_currency: 'usd',
-              order: 'market_cap_desc',
-              per_page: 10,
-              page: 1,
-              sparkline: true,
-            },
-          },
-        )
-        setCoins(response.data)
-      } catch (error) {
-        console.error('Error fetching coins:', error)
-      }
-    }
-    fetchCoins()
-  }, [])
+    dispatch(fetchCoins())
+  }, [dispatch])
 
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
       <Header />
       <Container sx={{ padding: '24px', maxWidth: '90vw !important' }}>
-        <CryptoTable coins={coins} />
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error}</p>}
+        <CryptoTable />
       </Container>
     </ThemeProvider>
   )

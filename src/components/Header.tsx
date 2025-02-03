@@ -9,11 +9,13 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { setSearchQuery } from '../features/cryptoSlice'
+import { RootState } from '../store/store'
 const StyledAppBar = styled(AppBar)({
   backgroundColor: 'white',
-  boxShadow: 'none',
-  borderBottom: '1px solid #ddd',
+  boxShadow: '0px 2px 4px  rgba(0,0,0,0.1)',
   padding: '16px 0',
 })
 
@@ -76,6 +78,9 @@ const StyledInputBase = styled(InputBase)({
 })
 
 const Header: React.FC = () => {
+  const dispatch = useDispatch()
+  const searchQuery = useSelector((state: RootState) => state.crypto.searchQuery)
+
   return (
     <StyledAppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
@@ -86,6 +91,8 @@ const Header: React.FC = () => {
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ 'aria-label': 'search' }}
+            value={searchQuery}
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
           />
         </Search>
 
