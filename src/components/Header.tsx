@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 
 import { setSearchQuery } from '../features/cryptoSlice'
 import { RootState } from '../store/store'
@@ -80,31 +81,50 @@ const StyledInputBase = styled(InputBase)({
 const Header: React.FC = () => {
   const dispatch = useDispatch()
   const searchQuery = useSelector((state: RootState) => state.crypto.searchQuery)
+  const location = useLocation()
+  const isHomePage = location.pathname === '/'
 
   return (
     <StyledAppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-            value={searchQuery}
-            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-          />
-        </Search>
+        <Box
+          sx={{
+            width: '250px',
+            display: isHomePage ? 'block' : 'none',
+          }}
+        >
+          {location.pathname === '/' && (
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchQuery}
+                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+              />
+            </Search>
+          )}
+        </Box>
 
-        <Box sx={{ textAlign: 'center' }}>
+        <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
           <LogoText variant="h1">Crypto Tracker</LogoText>
           <DateText variant="subtitle1">
             Tracking crypto so you don&apos;t have to!
           </DateText>
         </Box>
 
-        <Box sx={{ textAlign: 'center' }}>
-          <SubscribeButton variant="contained">SUBSCRIBE</SubscribeButton>
+        <Box
+          sx={{
+            width: '250px',
+            textAlign: 'right',
+            display: isHomePage ? 'block' : 'none',
+          }}
+        >
+          {location.pathname === '/' && (
+            <SubscribeButton variant="contained">SUBSCRIBE</SubscribeButton>
+          )}
         </Box>
       </Toolbar>
     </StyledAppBar>

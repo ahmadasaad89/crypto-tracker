@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import CryptoTable from './components/CryptoTable'
 import ErrorModal from './components/ErrorModal'
-import Header from './components/Header'
 import { fetchCoins } from './features/cryptoSlice'
 import { AppDispatch, RootState } from './store/store'
 
@@ -50,7 +49,6 @@ function App() {
   return (
     <ThemeProvider theme={lightTheme}>
       <CssBaseline />
-      <Header />
       <Container sx={{ padding: '24px', maxWidth: '90vw !important' }}>
         {loading && <p>Loading...</p>}
         <CryptoTable />

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 
 import App from './App'
 import CryptoDetails from './components/CryptoDetails'
+import Header from './components/Header'
 import { store } from './store/store'
 
 const container = document.getElementById('root')
@@ -15,6 +16,7 @@ if (container) {
     <React.StrictMode>
       <Provider store={store}>
         <BrowserRouter>
+          <Header />
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/coin/:id" element={<CryptoDetails />} />
