@@ -8,14 +8,15 @@ import {
   styled,
   Typography,
 } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 
 import { fetchChartData, setTimeRange } from '../features/chartSlice'
 import { toggleFavorite } from '../features/cryptoSlice'
 import { AppDispatch, RootState } from '../store/store'
+import ErrorModal from './ErrorModal'
 
 const StyledButton = styled(Button)({
   textTransform: 'none',
@@ -30,6 +31,9 @@ const StyledButton = styled(Button)({
 const CryptoDetails = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { chartData, loading, error, timeRange } = useSelector(
     (state: RootState) => state.chart,
@@ -43,6 +47,12 @@ const CryptoDetails = () => {
       dispatch(fetchChartData({ coinId: id, timeRange }))
     }
   }, [id, timeRange, dispatch])
+
+  useEffect(() => {
+    if (error) {
+      setIsModalOpen(true)
+    }
+  }, [error])
 
   return (
     <Box sx={{ maxWidth: '900px', margin: 'auto', padding: '24px' }}>
@@ -78,25 +88,59 @@ const CryptoDetails = () => {
         ))}
       </Box>
 
-      {loading ? (
-        <CircularProgress />
-      ) : error ? (
-        <Typography color="error">{error}</Typography>
-      ) : (
-        <LineChart width={800} height={400} data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="time" />
-          <YAxis domain={['auto', 'auto']} />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="price"
-            stroke="#f7931a"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <LineChart width={800} height={400} data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="time" />
+            <YAxis domain={['auto', 'auto']} />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="price"
+              stroke="#f7931a"
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
+        )}
+
+        <Button
+          onClick={() => navigate('/')}
+          sx={{
+            backgroundColor: '#f7931a',
+            color: 'white',
+            fontWeight: 'bold',
+            padding: '10px 20px',
+            textTransform: 'none',
+            fontSize: '16px',
+            borderRadius: '24px',
+            boxShadow: '0px 4px 6px rgba(0,0,0,0.1)',
+            '&:hover': { backgroundColor: '#e67e22' },
+            mt: 3,
+          }}
+        >
+          Back to Crypto List
+        </Button>
+      </Box>
+
+      {error && (
+        <ErrorModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          errorMessage={error || 'An unknown error occurred.'}
+        />
       )}
     </Box>
   )
