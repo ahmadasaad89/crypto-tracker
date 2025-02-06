@@ -4,7 +4,7 @@ Crypto Tracker is a **React + TypeScript** web application that allows users to 
 
 ## Live Demo
 
-[crypto-tracker-example.vercel.app](https://crypto-tracker-example.vercel.app)
+[Live Demo](https://crypto-tracker-example.vercel.app){:target="\_blank"}
 
 ---
 
