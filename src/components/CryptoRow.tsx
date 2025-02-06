@@ -73,6 +73,28 @@ const ChangeBox = styled(Box, {
   borderRadius: '5px',
 }))
 
+const NameBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+})
+
+const StyledAvatar = styled(Avatar)({
+  width: 28,
+  height: 28,
+})
+
+const NameTypography = styled(Typography)({
+  fontWeight: 'bold',
+  color: '#000',
+  fontSize: '14px',
+})
+
+const SymbolTypography = styled(Typography)({
+  color: '#555',
+  fontSize: '12px',
+})
+
 const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite }) => {
   const graphData = React.useMemo(
     () => ({
@@ -101,15 +123,11 @@ const CryptoRow: React.FC<Props> = ({ coin, index, isFavorite, onToggleFavorite 
 
       <NameCell>
         <NavigationLink to={`/coin/${coin.id}`}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar src={coin.image} sx={{ width: 28, height: 28 }} />
-            <Typography sx={{ fontWeight: 'bold', color: '#000', fontSize: '14px' }}>
-              {coin.name}
-            </Typography>
-            <Typography sx={{ color: '#555', fontSize: '12px' }}>
-              • {coin.symbol.toUpperCase()}
-            </Typography>
-          </Box>
+          <NameBox>
+            <StyledAvatar src={coin.image} />
+            <NameTypography>{coin.name}</NameTypography>
+            <SymbolTypography>• {coin.symbol.toUpperCase()}</SymbolTypography>
+          </NameBox>
         </NavigationLink>
       </NameCell>
 

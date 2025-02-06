@@ -1,13 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search'
-import {
-  AppBar,
-  Box,
-  Button,
-  InputBase,
-  styled,
-  Toolbar,
-  Typography,
-} from '@mui/material'
+import { AppBar, Box, InputBase, styled, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
@@ -35,20 +27,9 @@ const DateText = styled(Typography)({
   color: '#555',
 })
 
-const SubscribeButton = styled(Button)({
-  backgroundColor: '#3f51b5',
-  color: 'white',
-  fontWeight: 'bold',
-  padding: '6px 12px',
-  textTransform: 'none',
-  '&:hover': {
-    backgroundColor: '#303f9f',
-  },
-})
-
-const Search = styled('div')(({ theme }) => ({
+const Search = styled('div')(() => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: 4,
   backgroundColor: '#f1f1f1',
   '&:hover': {
     backgroundColor: '#e0e0e0',
@@ -78,6 +59,10 @@ const StyledInputBase = styled(InputBase)({
   },
 })
 
+const SideBox = styled(Box)({
+  width: '250px',
+})
+
 const Header: React.FC = () => {
   const dispatch = useDispatch()
   const searchQuery = useSelector((state: RootState) => state.crypto.searchQuery)
@@ -87,26 +72,28 @@ const Header: React.FC = () => {
   return (
     <StyledAppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box
-          sx={{
-            width: '250px',
-            display: isHomePage ? 'block' : 'none',
-          }}
-        >
-          {location.pathname === '/' && (
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-                value={searchQuery}
-                onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-              />
-            </Search>
-          )}
-        </Box>
+        {isHomePage && (
+          <SideBox
+            sx={{
+              width: '250px',
+              display: isHomePage ? 'block' : 'none',
+            }}
+          >
+            {location.pathname === '/' && (
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={searchQuery}
+                  onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+                />
+              </Search>
+            )}
+          </SideBox>
+        )}
 
         <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
           <LogoText variant="h1">Crypto Tracker</LogoText>
@@ -115,17 +102,14 @@ const Header: React.FC = () => {
           </DateText>
         </Box>
 
-        <Box
-          sx={{
-            width: '250px',
-            textAlign: 'right',
-            display: isHomePage ? 'block' : 'none',
-          }}
-        >
-          {location.pathname === '/' && (
-            <SubscribeButton variant="contained">SUBSCRIBE</SubscribeButton>
-          )}
-        </Box>
+        {isHomePage && (
+          <SideBox
+            sx={{
+              width: '250px',
+              display: isHomePage ? 'block' : 'none',
+            }}
+          />
+        )}
       </Toolbar>
     </StyledAppBar>
   )

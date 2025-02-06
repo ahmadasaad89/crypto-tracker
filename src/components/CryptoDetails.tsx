@@ -28,6 +28,47 @@ const StyledButton = styled(Button)({
   },
 })
 
+const Container = styled(Box)({
+  maxWidth: '900px',
+  margin: 'auto',
+  padding: '24px',
+})
+
+const Header = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: '24px',
+})
+
+const RangeButtonGroup = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '8px',
+  marginBottom: '24px',
+})
+
+const ChartContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '100%',
+})
+
+const BackButton = styled(Button)({
+  backgroundColor: '#f7931a',
+  color: 'white',
+  fontWeight: 'bold',
+  padding: '10px 20px',
+  textTransform: 'none',
+  fontSize: '16px',
+  borderRadius: '24px',
+  boxShadow: '0px 4px 6px rgba(0,0,0,0.1)',
+  marginTop: '24px',
+  '&:hover': { backgroundColor: '#e67e22' },
+})
+
 const CryptoDetails = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch<AppDispatch>()
@@ -55,15 +96,8 @@ const CryptoDetails = () => {
   }, [error])
 
   return (
-    <Box sx={{ maxWidth: '900px', margin: 'auto', padding: '24px' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 3,
-        }}
-      >
+    <Container>
+      <Header>
         <Typography variant="h5" fontWeight="bold">
           Bitcoin Price Chart ({id?.toUpperCase()})
         </Typography>
@@ -74,9 +108,9 @@ const CryptoDetails = () => {
             <StarBorderIcon sx={{ color: '#777' }} />
           )}
         </IconButton>
-      </Box>
+      </Header>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 3 }}>
+      <RangeButtonGroup>
         {['1', '7', '30', '365'].map((range) => (
           <StyledButton
             key={range}
@@ -86,17 +120,9 @@ const CryptoDetails = () => {
             {range === '1' ? '24H' : range === '7' ? '7D' : range === '30' ? '30D' : '1Y'}
           </StyledButton>
         ))}
-      </Box>
+      </RangeButtonGroup>
 
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-        }}
-      >
+      <ChartContainer>
         {loading ? (
           <CircularProgress />
         ) : (
@@ -116,24 +142,8 @@ const CryptoDetails = () => {
           </LineChart>
         )}
 
-        <Button
-          onClick={() => navigate('/')}
-          sx={{
-            backgroundColor: '#f7931a',
-            color: 'white',
-            fontWeight: 'bold',
-            padding: '10px 20px',
-            textTransform: 'none',
-            fontSize: '16px',
-            borderRadius: '24px',
-            boxShadow: '0px 4px 6px rgba(0,0,0,0.1)',
-            '&:hover': { backgroundColor: '#e67e22' },
-            mt: 3,
-          }}
-        >
-          Back to Crypto List
-        </Button>
-      </Box>
+        <BackButton onClick={() => navigate('/')}>Back to Crypto List</BackButton>
+      </ChartContainer>
 
       {error && (
         <ErrorModal
@@ -142,7 +152,7 @@ const CryptoDetails = () => {
           errorMessage={error || 'An unknown error occurred.'}
         />
       )}
-    </Box>
+    </Container>
   )
 }
 

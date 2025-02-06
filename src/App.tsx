@@ -1,6 +1,6 @@
 import './utils/chartSetup'
 
-import { Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { Container, CssBaseline } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -8,18 +8,6 @@ import CryptoTable from './components/CryptoTable'
 import ErrorModal from './components/ErrorModal'
 import { fetchCoins } from './features/cryptoSlice'
 import { AppDispatch, RootState } from './store/store'
-
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    background: {
-      default: '#ffffff',
-    },
-    text: {
-      primary: '#000000',
-    },
-  },
-})
 
 export interface Coin {
   id: string
@@ -47,7 +35,7 @@ function App() {
   }, [error])
 
   return (
-    <ThemeProvider theme={lightTheme}>
+    <>
       <CssBaseline />
       <Container sx={{ padding: '24px', maxWidth: '90vw !important' }}>
         {loading && <p>Loading...</p>}
@@ -59,7 +47,7 @@ function App() {
         onClose={() => setIsModalOpen(false)}
         errorMessage={error || 'An unknown error occurred.'}
       />
-    </ThemeProvider>
+    </>
   )
 }
 
