@@ -10,8 +10,7 @@ import {
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Coin } from '../App'
-import { toggleFavorite } from '../features/cryptoSlice'
+import { Coin, toggleFavorite } from '../features/cryptoSlice'
 import { RootState } from '../store/store'
 import CryptoRow from './CryptoRow'
 

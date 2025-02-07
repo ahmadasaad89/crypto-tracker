@@ -5,7 +5,7 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 import { NavLink } from 'react-router'
 
-import { Coin } from '../App'
+import { Coin } from '../features/cryptoSlice'
 import { formatPriceChange } from '../utils/helpers'
 import FavoriteButton from './FavoriteButton'
 

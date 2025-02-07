@@ -73,12 +73,7 @@ const Header: React.FC = () => {
     <StyledAppBar position="static">
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         {isHomePage && (
-          <SideBox
-            sx={{
-              width: '250px',
-              display: isHomePage ? 'block' : 'none',
-            }}
-          >
+          <SideBox>
             {location.pathname === '/' && (
               <Search>
                 <SearchIconWrapper>
@@ -102,14 +97,7 @@ const Header: React.FC = () => {
           </DateText>
         </Box>
 
-        {isHomePage && (
-          <SideBox
-            sx={{
-              width: '250px',
-              display: isHomePage ? 'block' : 'none',
-            }}
-          />
-        )}
+        {isHomePage && <SideBox />}
       </Toolbar>
     </StyledAppBar>
   )
