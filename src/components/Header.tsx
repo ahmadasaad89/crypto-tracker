@@ -6,7 +6,9 @@ import { useLocation } from 'react-router'
 
 import { setSearchQuery } from '../features/cryptoSlice'
 import { RootState } from '../store/store'
+
 const StyledAppBar = styled(AppBar)({
+  position: 'static',
   backgroundColor: 'white',
   boxShadow: '0px 2px 4px  rgba(0,0,0,0.1)',
   padding: '16px 0',
@@ -21,7 +23,7 @@ const LogoText = styled(Typography)({
   color: 'black',
 })
 
-const DateText = styled(Typography)({
+const Subtitle = styled(Typography)({
   fontSize: '14px',
   textAlign: 'center',
   color: '#555',
@@ -63,6 +65,11 @@ const SideBox = styled(Box)({
   width: '250px',
 })
 
+const Logo = styled(Box)({
+  flexGrow: 1,
+  textAlign: 'center',
+})
+
 const Header: React.FC = () => {
   const dispatch = useDispatch()
   const searchQuery = useSelector((state: RootState) => state.crypto.searchQuery)
@@ -70,8 +77,25 @@ const Header: React.FC = () => {
   const isHomePage = location.pathname === '/'
 
   return (
-    <StyledAppBar position="static">
-      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+    <StyledAppBar>
+      <Toolbar
+        sx={{
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: 'center',
+          textAlign: 'center',
+          gap: { xs: 2, md: 0 },
+          justifyContent: { xs: 'center', md: 'space-between' },
+        }}
+      >
+        {isHomePage && <SideBox />}
+
+        <Logo>
+          <LogoText variant="h1">Crypto Tracker</LogoText>
+          <Subtitle variant="subtitle1">
+            Tracking crypto so you don&apos;t have to!
+          </Subtitle>
+        </Logo>
+
         {isHomePage && (
           <SideBox>
             {location.pathname === '/' && (
@@ -89,15 +113,6 @@ const Header: React.FC = () => {
             )}
           </SideBox>
         )}
-
-        <Box sx={{ flexGrow: 1, textAlign: 'center' }}>
-          <LogoText variant="h1">Crypto Tracker</LogoText>
-          <DateText variant="subtitle1">
-            Tracking crypto so you don&apos;t have to!
-          </DateText>
-        </Box>
-
-        {isHomePage && <SideBox />}
       </Toolbar>
     </StyledAppBar>
   )
