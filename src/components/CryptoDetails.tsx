@@ -13,9 +13,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts'
 
+import {
+  selectChartData,
+  selectChartError,
+  selectChartLoading,
+  selectTimeRange,
+} from '../features/chartSelectors'
 import { fetchChartData, setTimeRange } from '../features/chartSlice'
+import { selectFavorites } from '../features/cryptoSelectors'
 import { toggleFavorite } from '../features/cryptoSlice'
-import { AppDispatch, RootState } from '../store/store'
+import { AppDispatch } from '../store/store'
 import ErrorModal from './ErrorModal'
 
 const StyledButton = styled(Button)({
@@ -73,13 +80,13 @@ const CryptoDetails = () => {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const chartData = useSelector(selectChartData)
+  const loading = useSelector(selectChartLoading)
+  const error = useSelector(selectChartError)
+  const timeRange = useSelector(selectTimeRange)
+  const favorites = useSelector(selectFavorites)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const { chartData, loading, error, timeRange } = useSelector(
-    (state: RootState) => state.chart,
-  )
-  const { favorites } = useSelector((state: RootState) => state.crypto)
 
   const isFavorite = favorites.includes(id as string)
 

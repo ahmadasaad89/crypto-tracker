@@ -10,8 +10,12 @@ import {
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 
+import {
+  selectCoins,
+  selectFavorites,
+  selectSearchQuery,
+} from '../features/cryptoSelectors'
 import { Coin, toggleFavorite } from '../features/cryptoSlice'
-import { RootState } from '../store/store'
 import CryptoRow from './CryptoRow'
 
 const StyledTable = styled(Table)({
@@ -57,9 +61,9 @@ const GraphCell = styled(HeaderCell)({
 const CryptoTable = () => {
   const dispatch = useDispatch()
 
-  const { coins, searchQuery, favorites } = useSelector(
-    (state: RootState) => state.crypto,
-  )
+  const coins = useSelector(selectCoins)
+  const searchQuery = useSelector(selectSearchQuery)
+  const favorites = useSelector(selectFavorites)
 
   const filteredCoins: Coin[] = coins.filter(
     (coin: Coin) =>
