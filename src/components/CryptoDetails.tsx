@@ -56,11 +56,21 @@ const RangeButtonGroup = styled(Box)({
 })
 
 const ChartContainer = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
   width: '100%',
+  overflowX: 'auto',
+  overflowY: 'hidden',
+  display: 'flex',
+  justifyContent: 'center',
+})
+
+const ChartWrapper = styled(Box)({
+  maxWidth: '100%',
+})
+
+const ButtonWrapper = styled(Box)({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: '24px',
 })
 
 const BackButton = styled(Button)({
@@ -133,24 +143,28 @@ const CryptoDetails = () => {
         {loading ? (
           <CircularProgress />
         ) : (
-          <LineChart width={800} height={400} data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis domain={['auto', 'auto']} />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="price"
-              stroke="#f7931a"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
+          <ChartWrapper>
+            <LineChart width={800} height={400} data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="time" />
+              <YAxis domain={['auto', 'auto']} />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="price"
+                stroke="#f7931a"
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ChartWrapper>
         )}
-
-        <BackButton onClick={() => navigate('/')}>Back to Crypto List</BackButton>
       </ChartContainer>
+
+      <ButtonWrapper>
+        <BackButton onClick={() => navigate('/')}>Back to Crypto List</BackButton>
+      </ButtonWrapper>
 
       {error && (
         <ErrorModal
