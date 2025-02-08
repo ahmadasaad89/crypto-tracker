@@ -15,7 +15,7 @@ const StyledAppBar = styled(AppBar)({
 })
 
 const LogoText = styled(Typography)({
-  fontFamily: '"Old English Five", serif',
+  fontFamily: '"Inter", "Poppins", "Roboto", sans-serif',
   fontSize: '36px',
   fontWeight: 'bold',
   textAlign: 'center',
